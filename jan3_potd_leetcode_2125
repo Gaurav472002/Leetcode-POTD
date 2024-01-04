@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int numberOfBeams(vector<string>& bank) {
+        
+        int n =bank.size();
+        int result=0;
+        int prevcount=0;
+        for(int i=0;i<n;i++){
+            int currcount=0;
+
+            for(char &ch : bank[i]){ // traverse each string
+                if(ch=='1'){
+                    currcount++; // increase the current row count based on the number of 1's found
+                }
+            }
+            result+= currcount*prevcount; // calculate the result
+
+            if(currcount!=0){   // only move the prevcount to currcount if currcount has lasers
+                prevcount=currcount;
+            }
+        
+        }
+        return result;
+    }
+};
