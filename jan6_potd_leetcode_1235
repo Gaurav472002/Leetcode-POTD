@@ -1,0 +1,62 @@
+class Solution {
+public:
+
+    int n;
+    int t[50001];
+
+    // find the job whose starting time is greater than or equal to the end time of current job
+
+    int getNext(vector<vector<int>>&array,int l,int currentJobend){
+        
+        int r = n-1;
+        int ans=n+1;
+        while(l<=r){
+            int mid = l+(r-l)/2;
+            
+            if(array[mid][0]>=currentJobend){  // it is possible to take this task
+                ans =mid;
+                r=mid-1;
+ 
+            }
+            else{
+                l=mid+1;
+            }
+        }
+        return ans;
+    }   
+
+    int solve(vector<vector<int>>&array,int index){
+
+        if(index>=n){
+            return 0;
+        }
+        if(t[index]!=-1)return t[index];
+
+        int next = getNext(array,index+1,array[index][1]);
+        int taken = array[index][2]+solve(array,next); // find the next job that has startTime >=current
+        // job end Time
+
+        int notTaken = solve(array,index+1);
+
+        return  t[index]=max(taken,notTaken);
+    }
+
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        
+        n =startTime.size();
+        memset(t,-1,sizeof(t));
+        vector<vector<int>>result(n,vector<int>(3,0));
+
+        for(int i=0;i<n;i++){
+            result[i][0]=startTime[i];
+            result[i][1]=endTime[i];
+            result[i][2]=profit[i];
+        }
+
+        // auto comp = [&](auto& vec1, auto& vec2) {
+        //       return vec1[0] <= vec2[0];
+        // };
+        sort(result.begin(),result.end());
+        return solve(result,0);
+    }
+};
