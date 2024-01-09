@@ -1,0 +1,22 @@
+class Solution {
+public:
+
+    void inorder(TreeNode* root,string &ans){
+        if(!root)return;
+        inorder(root->left,ans);
+        if(!root->left && !root->right){
+            ans+= to_string(root->val)+"-"; // for this case if one tree has 2 12 and another has 21 2
+        }
+        inorder(root->right,ans);
+    }
+
+    bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+        
+        
+        string ans1="";
+        string ans2="";
+        inorder(root1,ans1);
+        inorder(root2,ans2);
+        return ans1==ans2;
+    }
+};
